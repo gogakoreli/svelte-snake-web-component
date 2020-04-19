@@ -107,6 +107,9 @@ function tick(game, direction) {
     return game;
 }
 function tickReducer(state) {
+    if (state.game.gameOver) {
+        return state;
+    }
     const [curDirection, nextDirection, ...rest] = state.directions;
     let direction = curDirection;
     if (nextDirection !== undefined) {
@@ -146,14 +149,15 @@ function getDirection(event) {
 function directionReducer(state, event) {
     let result = state;
     const newDirection = getDirection(event);
-    if (newDirection !== models_1.Direction.None) {
+    const lastDirection = state.directions[state.directions.length - 1];
+    if (newDirection !== models_1.Direction.None && newDirection !== lastDirection) {
         result = Object.assign(Object.assign({}, state), { directions: [...state.directions, newDirection], shouldRender: false });
     }
     return result;
 }
 exports.directionReducer = directionReducer;
 function renderConsole(state) {
-    if (state.shouldRender) {
+    if (state.shouldRender && !state.game.gameOver) {
         const map = state.game.map;
         const strGrid = map.grid
             .map((row) => row

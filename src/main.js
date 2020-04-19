@@ -3,7 +3,7 @@ import Snake from './snake.svelte';
 const snake = new Snake({
   target: document.body,
   props: {
-    name: 'world'
+    // name: 'world'
   }
 });
 

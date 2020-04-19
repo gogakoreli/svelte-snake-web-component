@@ -131,6 +131,10 @@ function tick(game: Game, direction: Direction): Game {
 }
 
 export function tickReducer(state: GameState): GameState {
+  if (state.game.gameOver) {
+    return state;
+  }
+
   const [curDirection, nextDirection, ...rest] = state.directions;
   let direction = curDirection;
   if (nextDirection !== undefined) {
@@ -176,7 +180,8 @@ function getDirection(event: KeyboardEvent): Direction {
 export function directionReducer(state: GameState, event: KeyboardEvent): GameState {
   let result = state;
   const newDirection = getDirection(event);
-  if (newDirection !== Direction.None) {
+  const lastDirection = state.directions[state.directions.length - 1];
+  if (newDirection !== Direction.None && newDirection !== lastDirection) {
     result = {
       ...state,
       directions: [...state.directions, newDirection],
@@ -187,7 +192,7 @@ export function directionReducer(state: GameState, event: KeyboardEvent): GameSt
 }
 
 export function renderConsole(state: GameState) {
-  if (state.shouldRender) {
+  if (state.shouldRender && !state.game.gameOver) {
     const map = state.game.map;
     const strGrid = map.grid
       .map((row) =>
