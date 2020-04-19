@@ -1,2 +1,3 @@
 {
+  "svelte.plugin.typescript.diagnostics.enable": false
 }
