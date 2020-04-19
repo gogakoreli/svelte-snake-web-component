@@ -1,9 +1,8 @@
 <script>
   import { onMount } from "svelte";
-
   import { getInputKey } from "./input";
 
-  export const name = "test";
+  export let name = "test";
   let time = new Date();
 
   // these automatically update when `time`
@@ -25,5 +24,6 @@
 
 </style>
 
-<svelte:options tag="svelte-clock" />
+<svelte:options tag="svelte-clock" immutable={true} />
 <svelte:window on:keydown={handleKeydown} />
+{name}
